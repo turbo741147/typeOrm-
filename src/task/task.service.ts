@@ -1,20 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
+import { ProjectRepository } from '../project/project.repository.js';
+import { UserRepository } from '../user/user.repository.js';
+import { DEFAULT_LIMIT, DEFAULT_OFFSET } from './task.constants.js';
 import { CreateTaskDto } from './dto/create-task.dto.js';
 import { TaskListQueryDto } from './dto/task-list-query.dto.js';
 import { TaskListResponseDto } from './dto/task-list-response.dto.js';
 import { TaskResponseDto } from './dto/task-response.dto.js';
 import { UpdateTaskDto } from './dto/update-task.dto.js';
-import { ProjectRepository } from './project/project.repository.js';
-import { Task } from './task/task.entity.js';
-import { TaskRepository } from './task/task.repository.js';
-import { UserRepository } from './user/user.repository.js';
-
-const DEFAULT_LIMIT = 20;
-const DEFAULT_OFFSET = 0;
+import { Task } from './task.entity.js';
+import { TaskRepository } from './task.repository.js';
 
 @Injectable()
-export class TypeormTaskService {
+export class TaskService {
   constructor(
     private readonly tasks: TaskRepository,
     private readonly projects: ProjectRepository,

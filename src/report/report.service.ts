@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ProjectRepository } from '../project/project.repository.js';
+import { TaskRepository } from '../task/task.repository.js';
+import { UserRepository } from '../user/user.repository.js';
 import { EscalationCandidateDto } from './dto/escalation-candidate.dto.js';
 import { LatestTaskDto } from './dto/latest-task.dto.js';
 import { TasksByStatusDto } from './dto/tasks-by-status.dto.js';
-import { ProjectRepository } from './project/project.repository.js';
-import { TaskRepository } from './task/task.repository.js';
-import { UserRepository } from './user/user.repository.js';
 
 @Injectable()
-export class TypeormReportService {
+export class ReportService {
   constructor(
     private readonly tasks: TaskRepository,
     private readonly projects: ProjectRepository,

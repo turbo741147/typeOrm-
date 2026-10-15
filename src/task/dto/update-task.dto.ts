@@ -1,10 +1,11 @@
 import { IsIn, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { taskStatuses, type TaskStatus } from './task-status.js';
+import { taskStatuses, type TaskStatus } from '../task-status.js';
 
-export class CreateTaskDto {
+export class UpdateTaskDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title?: string;
 
   @IsOptional()
   @IsString()

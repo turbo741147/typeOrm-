@@ -4,7 +4,7 @@ import { DeepPartial, IsNull, Repository } from 'typeorm';
 import {
   ESCALATION_AGE_DAYS,
   ESCALATION_LIMIT_PER_PROJECT,
-} from '../escalation.constants.js';
+} from '../report/escalation.constants.js';
 import { Task } from './task.entity.js';
 
 type TasksByStatusRow = {

@@ -10,17 +10,12 @@ import {
 } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto.js';
 import { TaskListQueryDto } from './dto/task-list-query.dto.js';
-import { TasksByStatusQueryDto } from './dto/tasks-by-status-query.dto.js';
+import { TaskService } from './task.service.js';
 import { UpdateTaskDto } from './dto/update-task.dto.js';
-import { TypeormReportService } from './typeorm-report.service.js';
-import { TypeormTaskService } from './typeorm-task.service.js';
 
-@Controller('typeorm-lab')
-export class TypeormLabController {
-  constructor(
-    private readonly tasks: TypeormTaskService,
-    private readonly reports: TypeormReportService,
-  ) {}
+@Controller()
+export class TaskController {
+  constructor(private readonly tasks: TaskService) {}
 
   @Post('projects/:projectId/tasks')
   create(@Param('projectId') projectId: string, @Body() dto: CreateTaskDto) {
@@ -48,20 +43,5 @@ export class TypeormLabController {
   @Delete('tasks/:taskId')
   remove(@Param('taskId') taskId: string) {
     return this.tasks.remove(taskId);
-  }
-
-  @Get('reports/tasks-by-status')
-  tasksByStatus(@Query() query: TasksByStatusQueryDto) {
-    return this.reports.tasksByStatus(query.projectId);
-  }
-
-  @Get('reports/latest-tasks')
-  latestTasks() {
-    return this.reports.latestTaskPerUser();
-  }
-
-  @Get('reports/escalation-candidates')
-  escalationCandidates() {
-    return this.reports.escalationCandidates();
   }
 }

@@ -14,15 +14,13 @@ npm run migration:run
 
 ## CRUD задач
 
-Префикс `/typeorm-lab`.
-
 | Метод | Путь |
 |---|---|
-| `POST` | `/typeorm-lab/projects/:projectId/tasks` |
-| `GET` | `/typeorm-lab/projects/:projectId/tasks?limit=20&offset=0` |
-| `GET` | `/typeorm-lab/tasks/:taskId` |
-| `PATCH` | `/typeorm-lab/tasks/:taskId` |
-| `DELETE` | `/typeorm-lab/tasks/:taskId` |
+| `POST` | `/projects/:projectId/tasks` |
+| `GET` | `/projects/:projectId/tasks?limit=20&offset=0` |
+| `GET` | `/tasks/:taskId` |
+| `PATCH` | `/tasks/:taskId` |
+| `DELETE` | `/tasks/:taskId` |
 
 
 
@@ -44,10 +42,10 @@ npm run migration:run
 
 ### Количество задач по статусам
 
-`GET /typeorm-lab/reports/tasks-by-status`
+`GET /reports/tasks-by-status`
 
 ### Пример запрос с фильтрацией 
-`GET /typeorm-lab/reports/tasks-by-status?projectId=project-1`
+`GET /reports/tasks-by-status?projectId=project-1`
 
 
 ```json
@@ -63,7 +61,7 @@ npm run migration:run
 
 ### Последняя задача каждого пользователя
 
-`GET /typeorm-lab/reports/latest-tasks`
+`GET /reports/latest-tasks`
 
 
 
@@ -82,7 +80,7 @@ npm run migration:run
 
 ### Кандидаты на эскалацию
 
-`GET /typeorm-lab/reports/escalation-candidates`
+`GET /reports/escalation-candidates`
 
 
 

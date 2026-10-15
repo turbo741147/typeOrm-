@@ -2,8 +2,8 @@ import 'dotenv/config';
 import { DataSource } from 'typeorm';
 import { AddTaskReportIndexes1791814260000 } from './migrations/1791814260000-AddTaskReportIndexes.js';
 
-import { Project } from './typeorm-lab/project/project.entity.js';
-import { Task } from './typeorm-lab/task/task.entity.js';
+import { Project } from './project/project.entity.js';
+import { Task } from './task/task.entity.js';
 
 const url = process.env.DATABASE_URL;
 if (!url) {
