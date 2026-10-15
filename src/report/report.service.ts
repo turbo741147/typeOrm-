@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ProjectRepository } from '../project/project.repository.js';
-import { TaskRepository } from '../task/task.repository.js';
-import { UserRepository } from '../user/user.repository.js';
+import { Injectable } from '@nestjs/common';
+import { ProjectService } from '../project/project.service.js';
+import { TaskService } from '../task/task.service.js';
+import { UserService } from '../user/user.service.js';
 import { EscalationCandidateDto } from './dto/escalation-candidate.dto.js';
 import { LatestTaskDto } from './dto/latest-task.dto.js';
 import { TasksByStatusDto } from './dto/tasks-by-status.dto.js';
@@ -9,14 +9,14 @@ import { TasksByStatusDto } from './dto/tasks-by-status.dto.js';
 @Injectable()
 export class ReportService {
   constructor(
-    private readonly tasks: TaskRepository,
-    private readonly projects: ProjectRepository,
-    private readonly users: UserRepository,
+    private readonly tasks: TaskService,
+    private readonly projects: ProjectService,
+    private readonly users: UserService,
   ) {}
 
   async tasksByStatus(projectId?: string): Promise<TasksByStatusDto[]> {
     if (projectId) {
-      await this.requireProject(projectId);
+      await this.projects.requireById(projectId);
     }
 
     const rows = await this.tasks.countByStatus(projectId);
@@ -48,12 +48,5 @@ export class ReportService {
       ageDays: Number(row.ageDays),
       priorityRank: Number(row.priorityRank),
     }));
-  }
-
-  private async requireProject(projectId: string): Promise<void> {
-    const project = await this.projects.findById(projectId);
-    if (!project) {
-      throw new NotFoundException(`Project ${projectId} not found`);
-    }
   }
 }

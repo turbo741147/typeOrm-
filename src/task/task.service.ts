@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
-import { ProjectRepository } from '../project/project.repository.js';
-import { UserRepository } from '../user/user.repository.js';
+import { ProjectService } from '../project/project.service.js';
+import { UserService } from '../user/user.service.js';
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from './task.constants.js';
 import { CreateTaskDto } from './dto/create-task.dto.js';
 import { TaskListQueryDto } from './dto/task-list-query.dto.js';
@@ -15,14 +15,14 @@ import { TaskRepository } from './task.repository.js';
 export class TaskService {
   constructor(
     private readonly tasks: TaskRepository,
-    private readonly projects: ProjectRepository,
-    private readonly users: UserRepository,
+    private readonly projects: ProjectService,
+    private readonly users: UserService,
   ) {}
 
   async create(projectId: string, dto: CreateTaskDto): Promise<TaskResponseDto> {
-    await this.requireProject(projectId);
+    await this.projects.requireById(projectId);
     if (dto.assigneeId) {
-      await this.requireUser(dto.assigneeId);
+      await this.users.requireById(dto.assigneeId);
     }
 
     const now = new Date();
@@ -47,7 +47,7 @@ export class TaskService {
     projectId: string,
     query: TaskListQueryDto,
   ): Promise<TaskListResponseDto> {
-    await this.requireProject(projectId);
+    await this.projects.requireById(projectId);
     const limit = query.limit ?? DEFAULT_LIMIT;
     const offset = query.offset ?? DEFAULT_OFFSET;
     const tasks = await this.tasks.findActiveByProject(projectId, limit, offset);
@@ -66,7 +66,7 @@ export class TaskService {
   async update(taskId: string, dto: UpdateTaskDto): Promise<TaskResponseDto> {
     const task = await this.requireTask(taskId);
     if (dto.assigneeId) {
-      await this.requireUser(dto.assigneeId);
+      await this.users.requireById(dto.assigneeId);
     }
 
     if (dto.title !== undefined) {
@@ -90,24 +90,18 @@ export class TaskService {
     return this.toTaskResponse(saved);
   }
 
+  countByStatus(projectId?: string) {
+    return this.tasks.countByStatus(projectId);
+  }
+
+  findEscalationCandidates() {
+    return this.tasks.findEscalationCandidates();
+  }
+
   async remove(taskId: string): Promise<TaskResponseDto> {
     const task = await this.requireTask(taskId);
     await this.tasks.deleteById(taskId);
     return this.toTaskResponse(task);
-  }
-
-  private async requireProject(projectId: string): Promise<void> {
-    const project = await this.projects.findById(projectId);
-    if (!project) {
-      throw new NotFoundException(`Project ${projectId} not found`);
-    }
-  }
-
-  private async requireUser(userId: string): Promise<void> {
-    const user = await this.users.findById(userId);
-    if (!user) {
-      throw new NotFoundException(`User ${userId} not found`);
-    }
   }
 
   private async requireTask(taskId: string): Promise<Task> {

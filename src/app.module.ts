@@ -1,15 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Project } from './project/project.entity.js';
-import { ProjectRepository } from './project/project.repository.js';
-import { ReportController } from './report/report.controller.js';
-import { ReportService } from './report/report.service.js';
-import { Task } from './task/task.entity.js';
-import { TaskController } from './task/task.controller.js';
-import { TaskRepository } from './task/task.repository.js';
-import { TaskService } from './task/task.service.js';
-import { User } from './user/user.entity.js';
-import { UserRepository } from './user/user.repository.js';
+import { ReportModule } from './report/report.module.js';
+import { TaskModule } from './task/task.module.js';
 
 @Module({
   imports: [
@@ -19,15 +11,8 @@ import { UserRepository } from './user/user.repository.js';
       autoLoadEntities: true,
       synchronize: false,
     }),
-    TypeOrmModule.forFeature([User, Project, Task]),
-  ],
-  controllers: [TaskController, ReportController],
-  providers: [
-    ProjectRepository,
-    TaskRepository,
-    UserRepository,
-    TaskService,
-    ReportService,
+    TaskModule,
+    ReportModule,
   ],
 })
 export class AppModule {}
