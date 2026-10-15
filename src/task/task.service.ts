@@ -51,11 +51,11 @@ export class TaskService {
     const limit = query.limit ?? DEFAULT_LIMIT;
     const offset = query.offset ?? DEFAULT_OFFSET;
     const tasks = await this.tasks.findActiveByProject(projectId, limit, offset);
-    return Object.assign(new TaskListResponseDto(), {
+    return {
       items: tasks.map((task) => this.toTaskResponse(task)),
       limit,
       offset,
-    });
+    };
   }
 
   async findOne(taskId: string): Promise<TaskResponseDto> {

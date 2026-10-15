@@ -2,15 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity.js';
-
-type LatestTaskRow = {
-  userId: string;
-  userName: string;
-  taskId: string | null;
-  title: string | null;
-  status: string | null;
-  createdAt: Date | null;
-};
+import { LatestTaskRow } from './types/latest-task-row.js';
 
 @Injectable()
 export class UserRepository {

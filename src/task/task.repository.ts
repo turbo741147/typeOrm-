@@ -6,20 +6,8 @@ import {
   ESCALATION_LIMIT_PER_PROJECT,
 } from '../report/escalation.constants.js';
 import { Task } from './task.entity.js';
-
-type TasksByStatusRow = {
-  projectId: string;
-  status: string;
-  tasksCount: string | number;
-};
-
-type EscalationRow = {
-  projectId: string;
-  taskId: string;
-  title: string;
-  ageDays: string | number;
-  priorityRank: string | number;
-};
+import { EscalationRow } from './types/escalation-row.js';
+import { TasksByStatusRow } from './types/tasks-by-status-row.js';
 
 @Injectable()
 export class TaskRepository {
